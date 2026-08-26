@@ -1,13 +1,14 @@
 import { Navbar as FlowbiteNavbar, NavbarBrand } from 'flowbite-react'
-import { HiMenuAlt1 } from 'react-icons/hi'
+import { HiLogout, HiMenuAlt1 } from 'react-icons/hi'
 import './navbar.css'
 
 interface NavbarProps {
   onMenuClick: () => void
+  onLogout: () => void
 }
 
 /** Reusable app navigation rendered by the shared application layout. */
-export function Navbar({ onMenuClick }: NavbarProps) {
+export function Navbar({ onMenuClick, onLogout }: NavbarProps) {
   return (
     <FlowbiteNavbar fluid className="app-navbar">
       <div className="app-navbar__content">
@@ -22,6 +23,10 @@ export function Navbar({ onMenuClick }: NavbarProps) {
           <span className="app-navbar__search-label">Search</span>
           <input type="search" placeholder="Search parking lots or spaces" />
         </label>
+        <button className="app-navbar__logout" type="button" onClick={onLogout}>
+          <HiLogout aria-hidden="true" />
+          <span>Log out</span>
+        </button>
       </div>
     </FlowbiteNavbar>
   )

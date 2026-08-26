@@ -1,27 +1,15 @@
-import { useNavigate } from 'react-router-dom'
-import { logout } from '../../store/slices/authSlice'
 import { Layout } from '../../Layout/Layout'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { useAppSelector } from '../../store/hooks'
 import { selectAuthUser } from '../../store/selectors'
 import './Dashboard.css'
 
 export function Dashboard() {
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
   const user = useAppSelector(selectAuthUser)
-
-  function handleLogout() {
-    dispatch(logout())
-    navigate('/login', { replace: true })
-  }
 
   return (
     <Layout>
       <main className="dashboard">
-        <header className="dashboard__header">
-          <span>Dashboard</span>
-          <button type="button" onClick={handleLogout}>Log out</button>
-        </header>
+        <header className="dashboard__header"><span>Dashboard</span></header>
         <section className="dashboard__content">
           <p className="dashboard__eyebrow">PARKING DASHBOARD</p>
           <h1>Welcome, {user?.name ?? 'driver'}.</h1>
