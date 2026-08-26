@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { login as mockLogin, MockApiError } from '../../mockApi'
 
 export interface AuthUser {
   id: string
   email: string
   name?: string
-  [key: string]: unknown
 }
 
 interface LoginCredentials {
@@ -32,46 +32,17 @@ const initialState: AuthState = {
 }
 
 /**
- * Sends credentials to `${VITE_API_BASE_URL}/auth/login`.
- * Leave VITE_API_BASE_URL empty when the API is served from the same origin.
+ * Uses the temporary local mocked API in src/mockApi/auth.ts.
  */
 export const login = createAsyncThunk<LoginResponse, LoginCredentials, { rejectValue: string }>(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/$/, '')
-
     try {
-      const response = await fetch(`${baseUrl}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      })
-      const body: unknown = await response.json().catch(() => null)
-      const payload = body as {
-        message?: string
-        user?: AuthUser
-        accessToken?: string
-        access_token?: string
-        token?: string
-        data?: { user?: AuthUser; accessToken?: string; access_token?: string; token?: string }
-      } | null
-
-      if (!response.ok) {
-        return rejectWithValue(payload?.message ?? 'Unable to log in. Check your credentials.')
-      }
-
-      const user = payload?.user ?? payload?.data?.user
-      const accessToken =
-        payload?.accessToken ?? payload?.access_token ?? payload?.token ??
-        payload?.data?.accessToken ?? payload?.data?.access_token ?? payload?.data?.token
-
-      if (!user || !accessToken) {
-        return rejectWithValue('The login response did not include a user and access token.')
-      }
-
-      return { user, accessToken }
-    } catch {
-      return rejectWithValue('Unable to reach the server. Please try again.')
+      return await mockLogin({ email, password })
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof MockApiError ? error.message : 'Unable to log in. Please try again.',
+      )
     }
   },
 )
