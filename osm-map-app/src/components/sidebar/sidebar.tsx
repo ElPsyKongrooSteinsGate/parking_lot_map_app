@@ -9,6 +9,7 @@ interface AppSidebarProps {
 export function AppSidebar({ isOpen, onNavigate }: AppSidebarProps) {
   return (
     <Sidebar aria-label="Application navigation" className={`app-sidebar ${isOpen ? 'app-sidebar--open' : ''}`}>
+      <p className="app-sidebar__heading">WORKSPACE</p>
       <SidebarItems>
         <SidebarItemGroup>
           <SidebarItem href="/dashboard" active onClick={onNavigate}>Dashboard</SidebarItem>
