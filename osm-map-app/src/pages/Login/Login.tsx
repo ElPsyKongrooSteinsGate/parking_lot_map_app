@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { login } from '../../store/slices/authSlice'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectAuthError, selectAuthLoading } from '../../store/selectors'
@@ -8,12 +9,18 @@ export function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const isLoading = useAppSelector(selectAuthLoading)
   const error = useAppSelector(selectAuthError)
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    dispatch(login({ email, password }))
+    try {
+      await dispatch(login({ email, password })).unwrap()
+      navigate('/dashboard', { replace: true })
+    } catch {
+      // The rejected thunk stores its user-facing error in Redux.
+    }
   }
 
   return (
