@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { Coordinate, GisFeature, MapLayerId } from '../types/gis'
+import type { Coordinate, GisFeature, MapLayerId } from '../../types/gis'
 
 interface GisDataState {
   features: GisFeature[]

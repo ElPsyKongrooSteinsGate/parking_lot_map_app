@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import type { ParkingLot, ParkingSpace, ParkingSpaceStatus } from '../types/data'
+import type { ParkingLot, ParkingSpace, ParkingSpaceStatus } from '../../types/data'
 
 interface DataState {
   lots: ParkingLot[]
