@@ -1,4 +1,4 @@
-:root { --text: #67758c; --text-h: #102f55; --bg: #f4f7fc; --border: #e3eaf3; --primary: #0867e9; --primary-dark: #0753c0; --accent: #27c778; --sans: system-ui, 'Segoe UI', Roboto, sans-serif; font: 16px/145% var(--sans); color: var(--text); background: var(--bg); font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+:root { --text: #59677c; --text-h: #101c32; --bg: #f6f8fb; --border: #e6eaf0; --primary: #1769e8; --primary-dark: #1258c8; --accent: #23a85c; --sans: 'Trebuchet MS', 'Segoe UI', sans-serif; font: 16px/145% var(--sans); color: var(--text); background: var(--bg); font-synthesis: none; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; min-height: 100svh; overflow-x: hidden; }
 #root { min-height: 100svh; }

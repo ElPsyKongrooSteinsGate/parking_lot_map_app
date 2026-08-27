@@ -1,0 +1,79 @@
+@media (max-width: 760px) {
+  .dashboard__right {
+    display: flex;
+    min-width: 0;
+  }
+
+  .vehicles,
+  .revenue {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .vehicle-table {
+    width: 100%;
+    overflow: visible;
+  }
+
+  .vehicle-table__head {
+    display: none;
+  }
+
+  .vehicle-table__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px 12px;
+    min-width: 0;
+    min-height: 0;
+    padding: 12px 0;
+  }
+
+  .vehicle-table__row > b {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+
+  .vehicle-table__row > span:nth-of-type(1) { grid-column: 1; grid-row: 2; }
+  .vehicle-table__row > span:nth-of-type(2) { grid-column: 1; grid-row: 3; }
+  .vehicle-table__row > span:nth-of-type(3) { grid-column: 1; grid-row: 4; }
+  .vehicle-table__row > span:nth-of-type(4) { grid-column: 1; grid-row: 5; }
+
+  .vehicle-table__row button {
+    grid-column: 2;
+    grid-row: 1 / span 5;
+    align-self: center;
+    min-width: 62px;
+  }
+
+  .vehicle-table__row > span::before {
+    display: inline-block;
+    width: 68px;
+    color: #7a8798;
+    font-size: .62rem;
+    text-transform: uppercase;
+  }
+
+  .vehicle-table__row > span:nth-of-type(1)::before { content: 'Vehicle'; }
+  .vehicle-table__row > span:nth-of-type(2)::before { content: 'Time in'; }
+  .vehicle-table__row > span:nth-of-type(3)::before { content: 'Duration'; }
+  .vehicle-table__row > span:nth-of-type(4)::before { content: 'Amount'; }
+
+  .revenue__body {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .revenue__numbers {
+    width: auto;
+  }
+
+  .chart {
+    width: 100%;
+    min-height: 185px;
+  }
+
+  .chart__line {
+    height: 170px;
+  }
+}
