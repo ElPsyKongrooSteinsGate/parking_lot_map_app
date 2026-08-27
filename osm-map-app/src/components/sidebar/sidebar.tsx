@@ -1,4 +1,5 @@
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from 'flowbite-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { HiChartBar, HiCog, HiDocumentText, HiOfficeBuilding, HiTag, HiTruck, HiViewGrid } from 'react-icons/hi'
 import './sidebar.css'
 
@@ -8,13 +9,22 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ isOpen, onNavigate }: AppSidebarProps) {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  function handleRouteClick(path: string, event: React.MouseEvent<HTMLElement>) {
+    event.preventDefault()
+    navigate(path)
+    onNavigate()
+  }
+
   return (
     <Sidebar aria-label="Application navigation" className={`app-sidebar ${isOpen ? 'app-sidebar--open' : ''}`}>
       <div className="app-sidebar__brand"><span>P</span><strong>ParkCebu<small>OPERATOR</small></strong></div>
       <SidebarItems>
         <SidebarItemGroup>
-          <SidebarItem href="/dashboard" active icon={HiViewGrid} onClick={onNavigate}>Dashboard</SidebarItem>
-          <SidebarItem href="#parking-lots" icon={HiOfficeBuilding} onClick={onNavigate}>Parking Lots</SidebarItem>
+          <SidebarItem href="/dashboard" active={location.pathname === '/dashboard'} icon={HiViewGrid} onClick={(event) => handleRouteClick('/dashboard', event)}>Dashboard</SidebarItem>
+          <SidebarItem href="/parking-spaces" active={location.pathname === '/parking-spaces'} icon={HiOfficeBuilding} onClick={(event) => handleRouteClick('/parking-spaces', event)}>Parking Spaces</SidebarItem>
           <SidebarItem href="#active-vehicles" icon={HiTruck} onClick={onNavigate}>Active Vehicles</SidebarItem>
           <SidebarItem href="#revenue" icon={HiChartBar} onClick={onNavigate}>Revenue</SidebarItem>
           <SidebarItem href="#rates" icon={HiTag} onClick={onNavigate}>Rates</SidebarItem>

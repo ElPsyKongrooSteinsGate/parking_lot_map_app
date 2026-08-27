@@ -2,6 +2,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { Dashboard } from './pages/Dashboard'
 import { Login } from './pages/Login'
+import { ParkingSpaces } from './pages/Parking_spaces'
 import { store } from './store'
 import { useAppSelector } from './store/hooks'
 import { selectAccessToken } from './store/selectors'
@@ -25,6 +26,7 @@ const AppWrapper: FC = function () {
       <Route path="/" element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />} />
       <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
       <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" replace />} />
+      <Route path="/parking-spaces" element={isAuthenticated ? <ParkingSpaces /> : <Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

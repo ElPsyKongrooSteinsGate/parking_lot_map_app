@@ -1,0 +1,35 @@
+import { HiChartBar, HiOfficeBuilding, HiPencil, HiTruck } from 'react-icons/hi'
+import { Layout } from '../../Layout/Layout'
+import './Parking_spaces.css'
+
+export function ParkingSpaces() {
+  return <Layout>
+    <main className="parking-spaces">
+      <div className="parking-spaces__notice"><HiChartBar /><div><strong>MVP Plan: You can manage one parking space.</strong><span>Upgrade your plan to add more parking spaces.</span></div><button type="button">Upgrade Plan</button></div>
+      <div className="parking-spaces__grid">
+        <section className="parking-card parking-form">
+          <div className="parking-card__heading"><div><h1>Parking Space Details</h1><p>Set up your parking space information</p></div><span>Status <b>Active</b></span></div>
+          <label>Parking Space Name <em>*</em><input defaultValue="IT Park Open Parking" /></label>
+          <div className="parking-form__two"><label>Address <em>*</em><input defaultValue="Cebu IT Park, Apas, Cebu City, Cebu 6000" /></label><label>Zone / Area<input defaultValue="Lot A" /></label></div>
+          <div className="parking-form__two"><label>Total Parking Slots <em>*</em><input defaultValue="150" /><small>Total number of vehicles your space can accommodate</small></label><label>Hourly Rate (₱) <em>*</em><input defaultValue="30" /><small>Base rate per hour</small></label></div>
+          <label>Operating Hours <em>*</em><div className="parking-form__hours"><select defaultValue="Open 24 Hours"><option>Open 24 Hours</option></select><span>+</span><select defaultValue="24/7"><option>24/7</option></select></div></label>
+          <label>Description<textarea defaultValue={'Open parking space for IT Park employees and visitors.\nEasy access to all major buildings.'} /></label>
+          <fieldset><legend>Vehicle Types</legend><div className="parking-form__checks"><label><input type="checkbox" defaultChecked /> Car</label><label><input type="checkbox" defaultChecked /> Motorcycle</label><label><input type="checkbox" defaultChecked /> SUV / Van</label><label><input type="checkbox" /> Truck</label></div></fieldset>
+          <button className="parking-spaces__save" type="button"><HiPencil />Save Changes</button>
+        </section>
+        <section className="parking-card parking-overview">
+          <div><h2>Parking Space Overview</h2><p>This is how your space will appear to drivers</p></div>
+          <div className="parking-overview__photo"><span>Available</span></div>
+          <h3>IT Park Open Parking</h3><p className="parking-overview__location"><HiOfficeBuilding />Cebu IT Park, Apas, Cebu City</p>
+          <div className="parking-overview__stats"><Stat icon={<HiPencil />} label="Rate" value="₱30 / hour" /><Stat icon={<HiChartBar />} label="Operating Hours" value="24 Hours" /><Stat icon={<HiOfficeBuilding />} label="Total Slots" value="150" /><Stat icon={<HiTruck />} label="Vehicle Types" value="Car, Motorcycle, SUV / Van" /></div>
+          <div className="parking-overview__tip"><HiChartBar /><span>You can only have one parking space in MVP plan.<b>Upgrade your plan to add more parking spaces.</b></span></div>
+          <button className="parking-overview__upgrade" type="button"><HiPencil />Upgrade Plan</button>
+        </section>
+      </div>
+    </main>
+  </Layout>
+}
+
+function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return <div className="parking-overview__stat"><span>{icon}</span><b>{label}</b><strong>{value}</strong></div>
+}
