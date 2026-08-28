@@ -1,7 +1,7 @@
 import { HiChartBar, HiEye, HiPencil, HiQrcode, HiTruck } from 'react-icons/hi'
-import { Layout } from '../../Layout/Layout'
-import { useAppSelector } from '../../store/hooks'
-import { selectAuthUser } from '../../store/selectors'
+import { Layout } from '../../../Layout/Layout'
+import { useAppSelector } from '../../../store/hooks'
+import { selectAuthUser } from '../../../store/selectors'
 import './Dashboard.css'
 import './DashboardMobile.css'
 

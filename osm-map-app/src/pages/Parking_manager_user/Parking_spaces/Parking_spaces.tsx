@@ -1,5 +1,5 @@
 import { HiChartBar, HiOfficeBuilding, HiPencil, HiTruck } from 'react-icons/hi'
-import { Layout } from '../../Layout/Layout'
+import { Layout } from '../../../Layout/Layout'
 import './Parking_spaces.css'
 
 export function ParkingSpaces() {

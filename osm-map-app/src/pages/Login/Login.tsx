@@ -16,8 +16,8 @@ export function Login() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     try {
-      await dispatch(login({ email, password })).unwrap()
-      navigate('/dashboard', { replace: true })
+      const response = await dispatch(login({ email, password })).unwrap()
+      navigate(response.user.role === 'driver' ? '/driver' : '/dashboard', { replace: true })
     } catch {
       // The rejected thunk stores its user-facing error in Redux.
     }

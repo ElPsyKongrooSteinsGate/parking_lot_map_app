@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { login as mockLogin, MockApiError } from '../../mockApi'
+import { login as mockLogin, MockApiError, type MockPrivilege, type MockUserRole } from '../../mockApi'
 
 export interface AuthUser {
   id: string
   email: string
   name?: string
+  role: MockUserRole
+  privileges: MockPrivilege[]
 }
 
 interface LoginCredentials {
