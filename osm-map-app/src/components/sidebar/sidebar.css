@@ -1,4 +1,4 @@
-.app-sidebar { flex: 0 0 260px; min-height: 100svh; padding: 22px 12px 18px; border: 0; color: #d5e6f6; background: linear-gradient(180deg,#091a35 0%,#0d2344 100%); box-shadow: 10px 0 28px rgba(9,46,82,.06); }
+.app-sidebar { flex: 0 0 260px; min-height: 100svh; padding: 22px 12px 18px; border: 0; color: #d5e6f6; background: linear-gradient(180deg,#091a35 0%,#0d2344 100%); box-shadow: 10px 0 28px rgba(9,46,82,.06); z-index: 30; }
 .app-sidebar > div { height: 100%; background: transparent; }
 .app-sidebar__brand { display: flex; align-items: center; gap: 10px; height: 68px; margin: 0 10px 20px; color: #fff; }.app-sidebar__brand > span { display: grid; width: 45px; height: 52px; place-items: center; border: 6px solid #3abf6d; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); font-size: 1.35rem; font-weight: 800; }.app-sidebar__brand strong { font-size: 1.35rem; letter-spacing: -.05em; }.app-sidebar__brand small { display: block; margin-top: 1px; color: #2ec66d; font-size: .6rem; letter-spacing: .14em; }.app-sidebar__brand > span::first-letter { transform: rotate(45deg); }
 .app-sidebar ul { margin: 0; padding: 0; border: 0; }
