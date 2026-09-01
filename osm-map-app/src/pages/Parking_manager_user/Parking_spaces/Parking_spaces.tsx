@@ -1,4 +1,5 @@
-import { HiChartBar, HiOfficeBuilding, HiPencil, HiTruck } from 'react-icons/hi'
+import { HiChartBar, HiCog, HiOfficeBuilding, HiPencil, HiTruck } from 'react-icons/hi'
+import { HiMapPin } from 'react-icons/hi2'
 import { Layout } from '../../../Layout/Layout'
 import './Parking_spaces.css'
 
@@ -10,7 +11,7 @@ export function ParkingSpaces() {
         <section className="parking-card parking-form">
           <div className="parking-card__heading"><div><h1>Parking Space Details</h1><p>Set up your parking space information</p></div><span>Status <b>Active</b></span></div>
           <label>Parking Space Name <em>*</em><input defaultValue="IT Park Open Parking" /></label>
-          <div className="parking-form__two"><label>Address <em>*</em><input defaultValue="Cebu IT Park, Apas, Cebu City, Cebu 6000" /></label><label>Zone / Area<input defaultValue="Lot A" /></label></div>
+          <div className="parking-form__two"><label>Address <em>*</em><div className="parking-form__address-field"><input className="parking-form__address-input" defaultValue="Cebu IT Park, Apas, Cebu City, Cebu 6000" /><div className="parking-form__address-actions"><HiMapPin /><button type="button" aria-label="Configure parking address"><HiCog /></button></div></div></label><label>Zone / Area<input defaultValue="Lot A" /></label></div>
           <div className="parking-form__two"><label>Total Parking Slots <em>*</em><input defaultValue="150" /><small>Total number of vehicles your space can accommodate</small></label><label>Hourly Rate (₱) <em>*</em><input defaultValue="30" /><small>Base rate per hour</small></label></div>
           <label>Operating Hours <em>*</em><div className="parking-form__hours"><select defaultValue="Open 24 Hours"><option>Open 24 Hours</option></select><span>+</span><select defaultValue="24/7"><option>24/7</option></select></div></label>
           <label>Description<textarea defaultValue={'Open parking space for IT Park employees and visitors.\nEasy access to all major buildings.'} /></label>
