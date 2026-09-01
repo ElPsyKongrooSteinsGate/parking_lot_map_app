@@ -34,7 +34,46 @@ export function ParkingSpaces() {
     </main>
 
     <Modal isOpen={isAddressModalOpen} title="Address settings" onClose={() => setIsAddressModalOpen(false)}>
-      <p>Modal content here</p>
+      <div className="parking-address-modal">
+        <div className="parking-address-modal__search">
+          <span className="parking-address-modal__search-icon"><HiMapPin /></span>
+          <input defaultValue="Cebu IT Park, Apas, Cebu City, Cebu 6000" />
+          <button type="button">Apply</button>
+        </div>
+
+        <div className="parking-address-modal__map" aria-label="Map preview">
+          <div className="map-road map-road--vertical" />
+          <div className="map-road map-road--horizontal" />
+          <div className="map-road map-road--diag" />
+          <div className="map-pin map-pin--active"><span /></div>
+          <div className="map-pin map-pin--secondary"><span /></div>
+          <div className="map-pin map-pin--small"><span /></div>
+        </div>
+
+        <div className="parking-address-modal__list">
+          <button type="button" className="parking-address-modal__option active">
+            <span className="parking-address-modal__option-marker">A</span>
+            <span>
+              <strong>Cebu IT Park</strong>
+              <small>Apas, Cebu City</small>
+            </span>
+          </button>
+          <button type="button" className="parking-address-modal__option">
+            <span className="parking-address-modal__option-marker">B</span>
+            <span>
+              <strong>One Central</strong>
+              <small>Banilad, Cebu City</small>
+            </span>
+          </button>
+          <button type="button" className="parking-address-modal__option">
+            <span className="parking-address-modal__option-marker">C</span>
+            <span>
+              <strong>Metro Cebu Business Park</strong>
+              <small>Talamban, Cebu City</small>
+            </span>
+          </button>
+        </div>
+      </div>
     </Modal>
   </Layout>
 }
