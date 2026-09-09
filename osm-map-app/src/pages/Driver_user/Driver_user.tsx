@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { HiTruck } from 'react-icons/hi'
+import { HiMapPin } from 'react-icons/hi2'
 import { CircleMarker, MapContainer, Popup, TileLayer, useMapEvents } from 'react-leaflet'
 import { useLocation } from 'react-router-dom'
 import { Layout } from '../../Layout/Layout'
@@ -14,10 +16,41 @@ const parkingSpots = [
 export function DriverUser() {
   const location = useLocation()
   const [isParkingPanelOpen, setParkingPanelOpen] = useState(false)
+  const [isParkingDetailsOpen, setParkingDetailsOpen] = useState(false)
+  const [isVehicleDetailsOpen, setVehicleDetailsOpen] = useState(false)
+  const [licensePlate, setLicensePlate] = useState('')
+  const [vehicleType, setVehicleType] = useState('Car')
+  const [isParkingNoticeVisible, setParkingNoticeVisible] = useState(false)
+  const [isParkingNoticeFading, setParkingNoticeFading] = useState(false)
 
   useEffect(() => {
     setParkingPanelOpen(location.hash === '#find-parking')
   }, [location.hash])
+
+  useEffect(() => {
+    const showNoticeTimer = window.setTimeout(() => {
+      setParkingNoticeVisible(true)
+    }, 5000)
+
+    const fadeNoticeTimer = window.setTimeout(() => {
+      setParkingNoticeFading(true)
+    }, 10000)
+
+    const hideNoticeTimer = window.setTimeout(() => {
+      setParkingNoticeVisible(false)
+    }, 10500)
+
+    return () => {
+      window.clearTimeout(showNoticeTimer)
+      window.clearTimeout(fadeNoticeTimer)
+      window.clearTimeout(hideNoticeTimer)
+    }
+  }, [])
+
+  function dismissParkingNotice() {
+    setParkingNoticeFading(true)
+    window.setTimeout(() => setParkingNoticeVisible(false), 500)
+  }
 
   return (
     <Layout onOpenParkingPanel={() => setParkingPanelOpen(true)}>
@@ -51,7 +84,156 @@ export function DriverUser() {
             ))}
           </MapContainer>
 
-          {isParkingPanelOpen ? (
+          {isParkingNoticeVisible ? (
+            <aside
+              className={`driver-parking-notice ${isParkingNoticeFading ? 'driver-parking-notice--fading' : ''}`}
+              role="status"
+              aria-label="Nearby parking notification"
+            >
+              <button
+                className="driver-parking-notice__close"
+                type="button"
+                aria-label="Dismiss parking notification"
+                onClick={dismissParkingNotice}
+              >
+                ×
+              </button>
+              <div className="driver-parking-notice__content">
+                <strong>Ayala Mall Basement Parking</strong>
+                <span className="driver-parking-notice__rate">₱25/hr</span>
+                <span className="driver-parking-notice__distance"><i />200m away</span>
+                <span className="driver-parking-notice__status"><i />Limited Slots</span>
+              </div>
+              <button className="driver-parking-notice__action" type="button" onClick={() => setParkingPanelOpen(true)}>
+                Park Here
+              </button>
+            </aside>
+          ) : null}
+
+          {isVehicleDetailsOpen ? (
+            <section className="driver-parking-panel driver-vehicle-details" aria-label="Vehicle details">
+              <span className="driver-parking-panel__handle" aria-hidden="true" />
+              <div className="driver-vehicle-details__heading">
+                <div>
+                  <span className="driver-parking-panel__eyebrow">Start Parking</span>
+                  <h1>Vehicle Details</h1>
+                  <p>Please provide your vehicle information.</p>
+                </div>
+                <button
+                  className="driver-parking-panel__close"
+                  type="button"
+                  aria-label="Close vehicle details"
+                  onClick={() => setVehicleDetailsOpen(false)}
+                >
+                  ×
+                </button>
+              </div>
+
+              <label className="driver-vehicle-details__label">
+                License Plate Number
+                <span className="driver-vehicle-details__plate-field">
+                  <HiTruck aria-hidden="true" />
+                  <input
+                    value={licensePlate}
+                    onChange={(event) => setLicensePlate(event.target.value)}
+                    placeholder="Enter plate number"
+                    aria-label="License plate number"
+                  />
+                  <select aria-label="Plate location" defaultValue="Cebu">
+                    <option>Cebu</option>
+                    <option>Manila</option>
+                    <option>Davao</option>
+                  </select>
+                </span>
+              </label>
+
+              <fieldset className="driver-vehicle-details__types">
+                <legend>Vehicle Type</legend>
+                <div className="driver-vehicle-details__type-grid">
+                  {['Car', 'Motorcycle', 'SUV / Van', 'Truck'].map((type) => (
+                    <button
+                      className={vehicleType === type ? 'driver-vehicle-details__type driver-vehicle-details__type--selected' : 'driver-vehicle-details__type'}
+                      type="button"
+                      key={type}
+                      onClick={() => setVehicleType(type)}
+                      aria-pressed={vehicleType === type}
+                    >
+                      <span className={`driver-vehicle-details__vehicle-icon driver-vehicle-details__vehicle-icon--${type === 'SUV / Van' ? 'suv' : type.toLowerCase()}`} aria-hidden="true" />
+                      <span>{type}</span>
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+
+              <section className="driver-vehicle-details__information" aria-labelledby="parking-information-title">
+                <h2 id="parking-information-title">Parking Information</h2>
+                <div className="driver-vehicle-details__information-card">
+                  <div><span className="driver-vehicle-details__info-icon">◷</span><span><strong>Rate</strong><small>₱30.00 per hour</small></span></div>
+                  <div><span className="driver-vehicle-details__info-icon">□</span><span><strong>Operating Hours</strong><small>Open 24 Hours</small></span></div>
+                </div>
+              </section>
+
+              <div className="driver-vehicle-details__terms">
+                <span className="driver-vehicle-details__terms-icon">i</span>
+                <span>By starting your parking session, you agree to the parking rules and terms.</span>
+                <button type="button">View Rules</button>
+              </div>
+
+              <button className="driver-vehicle-details__confirm" type="button" disabled={!licensePlate.trim()}>
+                <span aria-hidden="true">⌗</span>Start Parking
+              </button>
+              <p className="driver-vehicle-details__confirmation-note">✦ Your parking session will start after confirmation.</p>
+            </section>
+          ) : isParkingDetailsOpen ? (
+            <section className="driver-parking-panel driver-parking-details" aria-label="Parking space details">
+              <span className="driver-parking-panel__handle" aria-hidden="true" />
+              <div className="driver-parking-details__heading">
+                <div>
+                  <h1>IT Park Open Parking</h1>
+                  <p><HiMapPin />Cebu IT Park, Cebu City</p>
+                </div>
+                <span className="driver-parking-details__availability">Available</span>
+              </div>
+
+              <div className="driver-parking-details__stats">
+                <div><span className="driver-parking-details__stat-icon driver-parking-details__stat-icon--check">✓</span><strong>28 Slots Available</strong></div>
+                <div><span className="driver-parking-details__capacity-icon" /><strong>Total Capacity <b>150</b></strong></div>
+                <div><span className="driver-parking-details__stat-icon driver-parking-details__stat-icon--clock">L</span><strong>Open 24 Hours</strong></div>
+                <div><span className="driver-parking-details__stat-icon driver-parking-details__stat-icon--rate">₱</span><strong>Rate <b>₱30</b> per hour</strong></div>
+              </div>
+
+              <div className="driver-parking-details__rules">
+                <h2><span className="driver-parking-details__rules-icon">!</span>Rules</h2>
+                <ul>
+                  <li>No overnight parking</li>
+                  <li>Cars only</li>
+                  <li>Cashless payment available</li>
+                </ul>
+              </div>
+
+              <div className="driver-parking-details__actions">
+                <button className="driver-parking-details__directions" type="button"><HiMapPin />Get Directions</button>
+                <button
+                  className="driver-parking-details__start"
+                  type="button"
+                  onClick={() => {
+                    setParkingDetailsOpen(false)
+                    setVehicleDetailsOpen(true)
+                  }}
+                >
+                  <HiTruck />Start Parking
+                </button>
+              </div>
+              <button
+                className="driver-parking-panel__close driver-parking-details__close"
+                type="button"
+                aria-label="Close parking details"
+                onClick={() => setParkingDetailsOpen(false)}
+              >
+                ×
+              </button>
+            </section>
+          ) : isParkingPanelOpen ? (
             <section className="driver-parking-panel" aria-label="Nearby parking spots">
               <span className="driver-parking-panel__handle" aria-hidden="true" />
               <div className="driver-parking-panel__heading">
@@ -93,7 +275,16 @@ export function DriverUser() {
                 ))}
               </div>
 
-              <button className="driver-start-parking" type="button">Start Parking</button>
+              <button
+                className="driver-start-parking"
+                type="button"
+                onClick={() => {
+                  setParkingPanelOpen(false)
+                  setParkingDetailsOpen(true)
+                }}
+              >
+                Start Parking
+              </button>
             </section>
           ) : null}
         </div>

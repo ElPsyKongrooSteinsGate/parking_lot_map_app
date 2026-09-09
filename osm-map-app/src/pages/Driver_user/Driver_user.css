@@ -33,6 +33,105 @@
   border-radius: 12px;
 }
 
+.driver-parking-notice {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 600;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px 18px;
+  width: min(100% - 48px, 420px);
+  padding: 16px 18px;
+  border: 1px solid #dbe4ef;
+  border-radius: 8px;
+  color: #152d4d;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 28px rgba(19, 42, 72, 0.22);
+  animation: driver-notice-in 300ms ease-out;
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.driver-parking-notice--fading {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.driver-parking-notice__content {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.driver-parking-notice__content strong {
+  padding-right: 56px;
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+.driver-parking-notice__rate {
+  position: absolute;
+  top: 17px;
+  right: 18px;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.driver-parking-notice__distance,
+.driver-parking-notice__status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #213b5c;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.driver-parking-notice__distance i,
+.driver-parking-notice__status i {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #40b563;
+}
+
+.driver-parking-notice__status i {
+  border-radius: 2px;
+  background: #f5ae27;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.driver-parking-notice__action {
+  align-self: end;
+  min-width: 82px;
+  padding: 8px 11px;
+  border: 0;
+  border-radius: 5px;
+  color: #172f4e;
+  background: #ffbd2e;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.driver-parking-notice__close {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  color: #52637d;
+  background: transparent;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .driver-parking-panel {
   position: absolute;
   right: 0;
@@ -95,6 +194,512 @@
   font-size: 1.35rem;
   line-height: 1;
   cursor: pointer;
+}
+
+.driver-parking-details {
+  padding-top: 10px;
+}
+
+.driver-vehicle-details {
+  padding: 10px 38px 24px;
+  color: #172f4e;
+}
+
+.driver-vehicle-details__heading {
+  position: relative;
+  padding: 8px 42px 20px 0;
+}
+
+.driver-vehicle-details__heading h1 {
+  margin: 0 0 5px;
+  color: #172f4e;
+  font-size: 1.45rem;
+}
+
+.driver-vehicle-details__heading p {
+  margin: 0;
+  color: #65758c;
+  font-size: 0.95rem;
+}
+
+.driver-vehicle-details__heading .driver-parking-panel__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.driver-vehicle-details__label,
+.driver-vehicle-details__types legend {
+  display: block;
+  margin-bottom: 9px;
+  color: #172f4e;
+  font-size: 0.93rem;
+  font-weight: 800;
+}
+
+.driver-vehicle-details__plate-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  margin-top: 10px;
+  padding: 0 14px;
+  border: 1px solid #d4dce8;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.driver-vehicle-details__plate-field > svg {
+  flex: 0 0 auto;
+  color: #6f7e93;
+  font-size: 1.3rem;
+}
+
+.driver-vehicle-details__plate-field input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  color: #172f4e;
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.driver-vehicle-details__plate-field input::placeholder {
+  color: #aeb8c8;
+}
+
+.driver-vehicle-details__plate-field select {
+  padding: 5px 20px 5px 4px;
+  border: 0;
+  color: #1662cf;
+  background: #fff;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.driver-vehicle-details__types {
+  margin: 28px 0 30px;
+  padding: 0;
+  border: 0;
+}
+
+.driver-vehicle-details__type-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.driver-vehicle-details__type {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  min-height: 104px;
+  padding: 13px 7px 10px;
+  border: 1px solid #d7deea;
+  border-radius: 9px;
+  color: #52637a;
+  background: #fff;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.driver-vehicle-details__type--selected {
+  border: 2px solid #176be0;
+  color: #176be0;
+  background: #fafdff;
+}
+
+.driver-vehicle-details__vehicle-icon {
+  position: relative;
+  display: block;
+  width: 29px;
+  height: 19px;
+  border: 3px solid currentColor;
+  border-radius: 7px 7px 4px 4px;
+}
+
+.driver-vehicle-details__vehicle-icon::before,
+.driver-vehicle-details__vehicle-icon::after {
+  position: absolute;
+  bottom: -7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  content: '';
+}
+
+.driver-vehicle-details__vehicle-icon::before { left: 1px; }
+.driver-vehicle-details__vehicle-icon::after { right: 1px; }
+
+.driver-vehicle-details__vehicle-icon--motorcycle {
+  width: 27px;
+  height: 10px;
+  border-width: 2px;
+  border-radius: 50%;
+}
+
+.driver-vehicle-details__vehicle-icon--suv {
+  height: 22px;
+  border-radius: 3px;
+}
+
+.driver-vehicle-details__vehicle-icon--truck {
+  width: 30px;
+  border-radius: 2px;
+}
+
+.driver-vehicle-details__information h2 {
+  margin: 0 0 12px;
+  color: #172f4e;
+  font-size: 1.08rem;
+}
+
+.driver-vehicle-details__information-card {
+  overflow: hidden;
+  border: 1px solid #e1e6ee;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(25, 48, 78, 0.08);
+}
+
+.driver-vehicle-details__information-card > div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 12px 20px;
+}
+
+.driver-vehicle-details__information-card > div + div {
+  border-top: 1px solid #edf1f5;
+}
+
+.driver-vehicle-details__info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: #176be0;
+  background: #eaf3ff;
+  font-size: 1.35rem;
+}
+
+.driver-vehicle-details__information-card strong,
+.driver-vehicle-details__information-card small {
+  display: block;
+}
+
+.driver-vehicle-details__information-card strong {
+  margin-bottom: 5px;
+  color: #172f4e;
+  font-size: 0.93rem;
+}
+
+.driver-vehicle-details__information-card small {
+  color: #687990;
+  font-size: 0.86rem;
+}
+
+.driver-vehicle-details__terms {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 26px 0 30px;
+  padding: 15px 18px;
+  border: 1px solid #cfe2fb;
+  border-radius: 9px;
+  color: #233e60;
+  background: #eff7ff;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.driver-vehicle-details__terms-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  background: #176be0;
+  font-weight: 800;
+}
+
+.driver-vehicle-details__terms button {
+  flex: 0 0 auto;
+  border: 0;
+  color: #176be0;
+  background: transparent;
+  font: inherit;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.driver-vehicle-details__confirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 58px;
+  border: 0;
+  border-radius: 7px;
+  color: #fff;
+  background: #176be0;
+  box-shadow: 0 5px 12px rgba(23, 107, 224, 0.2);
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.driver-vehicle-details__confirm:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.driver-vehicle-details__confirm > span {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.driver-vehicle-details__confirmation-note {
+  margin: 16px 0 0;
+  color: #687990;
+  text-align: center;
+  font-size: 0.82rem;
+}
+
+.driver-parking-details__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 4px 16px;
+}
+
+.driver-parking-details__heading h1 {
+  margin: 0 0 6px;
+  font-size: 1.4rem;
+}
+
+.driver-parking-details__heading p {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  color: #5d7290;
+  font-size: 0.95rem;
+}
+
+.driver-parking-details__heading p svg {
+  color: #6680a5;
+  font-size: 1.15rem;
+}
+
+.driver-parking-details__availability {
+  padding: 7px 13px;
+  border-radius: 6px;
+  color: #fff;
+  background: #3f9956;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.driver-parking-details__stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 14px;
+  border: 1px solid #e0e6ef;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(25, 48, 78, 0.08);
+}
+
+.driver-parking-details__stats > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  padding: 12px 20px;
+  color: #203a5d;
+}
+
+.driver-parking-details__stats > div:nth-child(odd) {
+  border-right: 1px solid #edf1f5;
+}
+
+.driver-parking-details__stats > div:nth-child(-n + 2) {
+  border-bottom: 1px solid #edf1f5;
+}
+
+.driver-parking-details__stats > div > svg,
+.driver-parking-details__stat-icon {
+  flex: 0 0 auto;
+  color: #45965a;
+  font-size: 1.45rem;
+}
+
+.driver-parking-details__stats > div:nth-child(2) .driver-parking-details__capacity-icon {
+  color: #6e86aa;
+}
+
+.driver-parking-details__stat-icon--clock,
+.driver-parking-details__stat-icon--rate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 3px;
+  border-radius: 50%;
+  color: #fff;
+  background: #45965a;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.driver-parking-details__stat-icon--check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #45965a;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.driver-parking-details__stats strong {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  font-size: 0.96rem;
+}
+
+.driver-parking-details__stats b {
+  font-size: 1rem;
+}
+
+.driver-parking-details__capacity-icon {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 23px;
+  height: 18px;
+  border: 2px solid #6e86aa;
+  border-radius: 2px;
+}
+
+.driver-parking-details__capacity-icon::after {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  left: 3px;
+  height: 2px;
+  background: #6e86aa;
+  box-shadow: 0 -5px #6e86aa;
+  content: '';
+}
+
+.driver-parking-details__rules {
+  margin-bottom: 26px;
+  padding: 16px 20px 17px;
+  border: 1px solid #dce7f0;
+  border-radius: 7px;
+  color: #203a5d;
+  background: #eef6fb;
+}
+
+.driver-parking-details__rules h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  font-size: 1.08rem;
+}
+
+.driver-parking-details__rules-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  color: #fff;
+  background: #45965a;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.driver-parking-details__rules ul {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 21px;
+  font-size: 0.95rem;
+}
+
+.driver-parking-details__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.driver-parking-details__actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50px;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.driver-parking-details__actions svg {
+  font-size: 1.25rem;
+}
+
+.driver-parking-details__directions {
+  border: 1px solid #cbd5e4;
+  color: #203a5d;
+  background: #fff;
+  box-shadow: 0 3px 7px rgba(25, 48, 78, 0.1);
+}
+
+.driver-parking-details__directions svg {
+  color: #246bda;
+}
+
+.driver-parking-details__start {
+  border: 1px solid #1d5fc9;
+  color: #fff;
+  background: #246bda;
+  box-shadow: 0 4px 9px rgba(36, 107, 218, 0.22);
+}
+
+.driver-parking-details__close {
+  position: absolute;
+  top: 19px;
+  right: 20px;
+  display: none;
 }
 
 .driver-parking-list {
@@ -206,6 +811,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes driver-notice-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 960px) {
   .driver-parking-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -224,8 +834,78 @@
     border-radius: 18px 18px 0 0;
   }
 
+  .driver-vehicle-details {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .driver-vehicle-details__heading {
+    padding-top: 2px;
+  }
+
+  .driver-vehicle-details__type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .driver-vehicle-details__terms {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .driver-vehicle-details__terms > span:nth-child(2) {
+    flex: 1;
+  }
+
+  .driver-vehicle-details__terms button {
+    margin-left: 40px;
+  }
+
+  .driver-parking-notice {
+    top: 14px;
+    right: 14px;
+    width: calc(100% - 28px);
+  }
+
   .driver-parking-panel h1 {
     font-size: 1.18rem;
+  }
+
+  .driver-parking-details__heading {
+    padding-right: 42px;
+  }
+
+  .driver-parking-details__heading h1 {
+    font-size: 1.18rem;
+  }
+
+  .driver-parking-details__availability {
+    padding: 6px 9px;
+    font-size: 0.78rem;
+  }
+
+  .driver-parking-details__stats > div {
+    min-height: 54px;
+    padding: 10px 12px;
+  }
+
+  .driver-parking-details__stats strong {
+    display: block;
+    font-size: 0.8rem;
+  }
+
+  .driver-parking-details__stats b {
+    display: block;
+    margin-top: 2px;
+  }
+
+  .driver-parking-details__rules {
+    margin-bottom: 18px;
+    padding: 14px;
+  }
+
+  .driver-parking-details__actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .driver-parking-list {
