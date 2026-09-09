@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CircleMarker, MapContainer, Popup, TileLayer, useMapEvents } from 'react-leaflet'
+import { useLocation } from 'react-router-dom'
 import { Layout } from '../../Layout/Layout'
 import './Driver_user.css'
 
@@ -11,10 +12,15 @@ const parkingSpots = [
 ]
 
 export function DriverUser() {
+  const location = useLocation()
   const [isParkingPanelOpen, setParkingPanelOpen] = useState(false)
 
+  useEffect(() => {
+    setParkingPanelOpen(location.hash === '#find-parking')
+  }, [location.hash])
+
   return (
-    <Layout>
+    <Layout onOpenParkingPanel={() => setParkingPanelOpen(true)}>
       <main className="driver-home">
         <div className="driver-map-panel" aria-label="Parking availability map">
           <MapContainer center={[40.7128, -74.006]} zoom={13} scrollWheelZoom className="driver-map">

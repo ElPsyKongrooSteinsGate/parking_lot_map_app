@@ -8,9 +8,10 @@ import './Layout.css'
 
 interface LayoutProps {
   children: ReactNode
+  onOpenParkingPanel?: () => void
 }
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children, onOpenParkingPanel }: LayoutProps) {
   const [isSidebarOpen, setSidebarOpen] = useState(false)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -33,7 +34,11 @@ export function Layout({ children }: LayoutProps) {
           aria-label="Close navigation menu"
           onClick={() => setSidebarOpen(false)}
         />
-        <AppSidebar isOpen={isSidebarOpen} onNavigate={() => setSidebarOpen(false)} />
+        <AppSidebar
+          isOpen={isSidebarOpen}
+          onNavigate={() => setSidebarOpen(false)}
+          onOpenParkingPanel={onOpenParkingPanel}
+        />
         <div className="app-layout__content">{children}</div>
       </div>
     </div>

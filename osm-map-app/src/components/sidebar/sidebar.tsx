@@ -1,6 +1,23 @@
+import type { MouseEvent } from 'react'
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from 'flowbite-react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { HiBell, HiCalendar, HiChartBar, HiCog, HiDocumentText, HiOfficeBuilding, HiTag, HiTruck, HiViewGrid } from 'react-icons/hi'
+import {
+  HiArrowLeftOnRectangle,
+  HiCalendarDays,
+  HiCreditCard,
+  HiHeart,
+  HiMapPin,
+  HiQuestionMarkCircle,
+} from 'react-icons/hi2'
+import {
+  HiChartBar,
+  HiCog,
+  HiDocumentText,
+  HiOfficeBuilding,
+  HiTag,
+  HiTruck,
+  HiViewGrid,
+} from 'react-icons/hi'
 import { useAppSelector } from '../../store/hooks'
 import { selectAuthUser } from '../../store/selectors'
 import './sidebar.css'
@@ -8,9 +25,10 @@ import './sidebar.css'
 interface AppSidebarProps {
   isOpen: boolean
   onNavigate: () => void
+  onOpenParkingPanel?: () => void
 }
 
-export function AppSidebar({ isOpen, onNavigate }: AppSidebarProps) {
+export function AppSidebar({ isOpen, onNavigate, onOpenParkingPanel }: AppSidebarProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const user = useAppSelector(selectAuthUser)
@@ -18,11 +36,13 @@ export function AppSidebar({ isOpen, onNavigate }: AppSidebarProps) {
 
   const navigation = isDriver
     ? [
-      { label: 'Find parking', icon: HiViewGrid, href: '#find-parking' },
-      { label: 'My reservations', icon: HiCalendar, href: '#reservations' },
-      { label: 'Saved locations', icon: HiOfficeBuilding, href: '#saved-locations' },
-      { label: 'Notifications', icon: HiBell, href: '#notifications' },
-      { label: 'My profile', icon: HiCog, href: '#profile' },
+      { label: 'Find Parking', icon: HiMapPin, href: '#find-parking' },
+      { label: 'My Bookings', icon: HiCalendarDays, href: '#bookings' },
+      { label: 'Payment History', icon: HiCreditCard, href: '#payments' },
+      { label: 'Favorites', icon: HiHeart, href: '#favorites' },
+      { label: 'Help & Support', icon: HiQuestionMarkCircle, href: '#support' },
+      { label: 'Settings', icon: HiCog, href: '#settings' },
+      { label: 'Log Out', icon: HiArrowLeftOnRectangle, href: '#logout' },
     ]
     : [
       { label: 'Dashboard', icon: HiViewGrid, href: '/dashboard' },
@@ -35,8 +55,21 @@ export function AppSidebar({ isOpen, onNavigate }: AppSidebarProps) {
       { label: 'Settings', icon: HiCog, href: '#settings' },
     ]
 
-  function handleRouteClick(path: string, event: React.MouseEvent<HTMLElement>) {
+  function handleRouteClick(path: string, event: MouseEvent<HTMLElement>) {
     event.preventDefault()
+
+    if (path === '#find-parking') {
+      onOpenParkingPanel?.()
+      onNavigate()
+      return
+    }
+
+    if (path.startsWith('#')) {
+      navigate({ pathname: location.pathname, hash: path })
+      onNavigate()
+      return
+    }
+
     navigate(path)
     onNavigate()
   }
@@ -46,7 +79,32 @@ export function AppSidebar({ isOpen, onNavigate }: AppSidebarProps) {
       <div className="app-sidebar__brand"><span>P</span><strong>ParkCebu<small>{isDriver ? 'DRIVER' : 'OPERATOR'}</small></strong></div>
       <SidebarItems>
         <SidebarItemGroup>
-          {navigation.map(({ label, icon: Icon, href }) => <SidebarItem key={label} href={href} active={href.startsWith('/') ? location.pathname === href : location.hash === href.slice(1)} icon={Icon} onClick={href.startsWith('/') ? (event) => handleRouteClick(href, event) : onNavigate}>{label}{label === 'Notifications' && !isDriver && <b className="app-sidebar__badge">3</b>}</SidebarItem>)}
+          {navigation.map(({ label, icon: Icon, href }) => {
+            const isFindParkingAction = label === 'Find Parking' && isDriver
+
+            return (
+              <SidebarItem
+                key={label}
+                href={isFindParkingAction ? undefined : href}
+                active={href.startsWith('/') ? location.pathname === href : location.hash === href.slice(1)}
+                icon={Icon}
+                onClick={(event: MouseEvent<HTMLElement>) => {
+                  if (isFindParkingAction) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    onOpenParkingPanel?.()
+                    onNavigate()
+                    return
+                  }
+
+                  handleRouteClick(href, event)
+                }}
+              >
+                {label}
+                {label === 'Notifications' && !isDriver && <b className="app-sidebar__badge">3</b>}
+              </SidebarItem>
+            )
+          })}
         </SidebarItemGroup>
       </SidebarItems>
       {!isDriver && <div className="app-sidebar__lot"><span className="app-sidebar__lot-image" /><div><strong>IT Park Open<br />Parking</strong></div><span>⌄</span></div>}
