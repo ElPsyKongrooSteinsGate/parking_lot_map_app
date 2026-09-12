@@ -4,6 +4,23 @@
     "status": "reference-only",
     "purpose": "Catalog of application data used across mock auth, business entities, GIS reference records, and the driver parking map."
   },
+  "authorization": {
+    "model": ["RBAC", "ABAC", "PBAC"],
+    "actions": [
+      "dashboard:read",
+      "parking_lot:read",
+      "parking_space:read",
+      "parking_space:update",
+      "parking_space:reserve"
+    ],
+    "policies": [
+      { "id": "active-account", "type": "PBAC", "effect": "allow" },
+      { "id": "rbac-role-permission", "type": "RBAC", "effect": "allow" },
+      { "id": "abac-resource-scope", "type": "ABAC", "effect": "allow" },
+      { "id": "abac-space-type", "type": "ABAC", "effect": "allow" },
+      { "id": "pbac-required-permit", "type": "PBAC", "effect": "allow" }
+    ]
+  },
   "mockAuthAccounts": [
     {
       "id": "user-parkflow-developer",
@@ -11,6 +28,11 @@
       "name": "ParkFlow Developer",
       "role": "developer",
       "privileges": ["superadmin"],
+      "assignedFacilityIds": ["facility-commercial-building"],
+      "assignedZoneIds": ["PAZ-N", "PAZ-E", "PAZ-S", "PAZ-W"],
+      "accessibleSpaceTypes": ["regular", "pwd", "senior", "family", "vip", "staff", "motorcycle", "bicycle", "ev_charging", "loading_service"],
+      "permits": ["vip", "staff", "ev_charging", "loading_service"],
+      "accountStatus": "active",
       "password": "password123"
     },
     {
@@ -19,6 +41,11 @@
       "name": "ParkFlow Admin",
       "role": "admin",
       "privileges": ["admin"],
+      "assignedFacilityIds": ["facility-commercial-building"],
+      "assignedZoneIds": ["PAZ-N", "PAZ-E", "PAZ-S", "PAZ-W"],
+      "accessibleSpaceTypes": ["regular", "pwd", "senior", "family", "vip", "staff", "motorcycle", "bicycle", "ev_charging", "loading_service"],
+      "permits": ["vip", "staff", "ev_charging", "loading_service"],
+      "accountStatus": "active",
       "password": "password123"
     },
     {
@@ -27,6 +54,11 @@
       "name": "ParkFlow Manager",
       "role": "parking_manager",
       "privileges": ["parking_manager"],
+      "assignedFacilityIds": ["facility-commercial-building"],
+      "assignedZoneIds": ["PAZ-E", "PAZ-S"],
+      "accessibleSpaceTypes": ["regular", "pwd", "senior", "family", "staff", "motorcycle", "bicycle", "ev_charging"],
+      "permits": ["staff", "ev_charging"],
+      "accountStatus": "active",
       "password": "password123"
     },
     {
@@ -35,6 +67,11 @@
       "name": "ParkFlow Driver",
       "role": "driver",
       "privileges": ["driver"],
+      "assignedFacilityIds": [],
+      "assignedZoneIds": [],
+      "accessibleSpaceTypes": ["regular", "pwd", "senior", "family", "motorcycle", "bicycle", "ev_charging"],
+      "permits": [],
+      "accountStatus": "active",
       "password": "password123"
     }
   ],
@@ -42,6 +79,8 @@
     {
       "id": "lot-downtown-plaza",
       "name": "Downtown Plaza",
+      "facilityId": "facility-commercial-building",
+      "zoneId": "PAZ-N",
       "capacity": 120,
       "occupiedSpaces": 108,
       "address": "120 Park Avenue, New York, NY"
@@ -49,6 +88,8 @@
     {
       "id": "lot-market-garage",
       "name": "Market Street Garage",
+      "facilityId": "facility-commercial-building",
+      "zoneId": "PAZ-E",
       "capacity": 80,
       "occupiedSpaces": 74,
       "address": "48 Market Street, New York, NY"
@@ -56,6 +97,8 @@
     {
       "id": "lot-harbor-view",
       "name": "Harbor View Lot",
+      "facilityId": "facility-commercial-building",
+      "zoneId": "PAZ-S",
       "capacity": 95,
       "occupiedSpaces": 86,
       "address": "88 Harbor Road, New York, NY"
@@ -63,20 +106,60 @@
     {
       "id": "lot-central-station",
       "name": "Central Station",
+      "facilityId": "facility-commercial-building",
+      "zoneId": "PAZ-W",
       "capacity": 60,
       "occupiedSpaces": 57,
       "address": "42 Transit Avenue, New York, NY"
     }
   ],
+  "parkingZones": [
+    {
+      "id": "PAZ-N",
+      "facilityId": "facility-commercial-building",
+      "name": "North Parking Access Zone",
+      "accessibility": "high",
+      "circulation": "one_way",
+      "emergencyAccess": true,
+      "pedestrianRouteAvailable": true
+    },
+    {
+      "id": "PAZ-E",
+      "facilityId": "facility-commercial-building",
+      "name": "East Parking Access Zone",
+      "accessibility": "medium",
+      "circulation": "two_way",
+      "emergencyAccess": true,
+      "pedestrianRouteAvailable": true
+    },
+    {
+      "id": "PAZ-S",
+      "facilityId": "facility-commercial-building",
+      "name": "South Parking Access Zone",
+      "accessibility": "medium",
+      "circulation": "one_way",
+      "emergencyAccess": false,
+      "pedestrianRouteAvailable": true
+    },
+    {
+      "id": "PAZ-W",
+      "facilityId": "facility-commercial-building",
+      "name": "West Parking Access Zone",
+      "accessibility": "low",
+      "circulation": "two_way",
+      "emergencyAccess": false,
+      "pedestrianRouteAvailable": false
+    }
+  ],
   "parkingSpaces": [
-    { "id": "space-A-12", "lotId": "lot-downtown-plaza", "label": "A-12", "status": "available" },
-    { "id": "space-A-13", "lotId": "lot-downtown-plaza", "label": "A-13", "status": "available" },
-    { "id": "space-B-04", "lotId": "lot-market-garage", "label": "B-04", "status": "reserved" },
-    { "id": "space-B-05", "lotId": "lot-market-garage", "label": "B-05", "status": "occupied" },
-    { "id": "space-C-09", "lotId": "lot-harbor-view", "label": "C-09", "status": "available" },
-    { "id": "space-C-10", "lotId": "lot-harbor-view", "label": "C-10", "status": "disabled" },
-    { "id": "space-D-02", "lotId": "lot-central-station", "label": "D-02", "status": "available" },
-    { "id": "space-D-03", "lotId": "lot-central-station", "label": "D-03", "status": "occupied" }
+    { "id": "space-A-12", "lotId": "lot-downtown-plaza", "zoneId": "PAZ-N", "levelId": "level-1", "rowId": "row-A", "label": "A-12", "type": "regular", "status": "available", "requiresPermit": false },
+    { "id": "space-A-13", "lotId": "lot-downtown-plaza", "zoneId": "PAZ-N", "levelId": "level-1", "rowId": "row-A", "label": "A-13", "type": "pwd", "status": "available", "requiresPermit": false },
+    { "id": "space-B-04", "lotId": "lot-market-garage", "zoneId": "PAZ-E", "levelId": "level-2", "rowId": "row-B", "label": "B-04", "type": "ev_charging", "status": "reserved", "requiresPermit": false },
+    { "id": "space-B-05", "lotId": "lot-market-garage", "zoneId": "PAZ-E", "levelId": "level-2", "rowId": "row-B", "label": "B-05", "type": "regular", "status": "occupied", "requiresPermit": false },
+    { "id": "space-C-09", "lotId": "lot-harbor-view", "zoneId": "PAZ-S", "levelId": "level-1", "rowId": "row-C", "label": "C-09", "type": "family", "status": "available", "requiresPermit": false },
+    { "id": "space-C-10", "lotId": "lot-harbor-view", "zoneId": "PAZ-S", "levelId": "level-1", "rowId": "row-C", "label": "C-10", "type": "pwd", "status": "disabled", "requiresPermit": false },
+    { "id": "space-D-02", "lotId": "lot-central-station", "zoneId": "PAZ-W", "levelId": "level-1", "rowId": "row-D", "label": "D-02", "type": "motorcycle", "status": "available", "requiresPermit": false },
+    { "id": "space-D-03", "lotId": "lot-central-station", "zoneId": "PAZ-W", "levelId": "level-1", "rowId": "row-D", "label": "D-03", "type": "staff", "status": "occupied", "requiresPermit": true }
   ],
   "gisFeatures": [
     {

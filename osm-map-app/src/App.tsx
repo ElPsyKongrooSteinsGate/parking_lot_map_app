@@ -8,7 +8,7 @@ import { store } from './store'
 import { useAppSelector } from './store/hooks'
 import { selectAccessToken } from './store/selectors'
 import type { FC } from 'react'
-import type { MockPrivilege, MockUserRole } from './mockApi'
+import { canAccess as canAuthorize } from './mockApi'
 
 function App() {
   return (
@@ -24,20 +24,16 @@ const AppWrapper: FC = function () {
   const user = useAppSelector((state) => state.auth.user)
   const isAuthenticated = Boolean(accessToken)
 
-  function canAccess(roles: MockUserRole[], privileges: MockPrivilege[] = []) {
-    return Boolean(user && (roles.includes(user.role) || privileges.some((privilege) => user.privileges.includes(privilege))))
-  }
-
   const landingPath = user?.role === 'driver' ? '/driver' : '/dashboard'
 
   return (
     <Routes>
       <Route path="/" element={<Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
       <Route path="/login" element={isAuthenticated ? <Navigate to={landingPath} replace /> : <Login />} />
-      <Route path="/dashboard" element={isAuthenticated && canAccess(['developer', 'admin', 'parking_manager'], ['superadmin', 'admin']) ? <Dashboard /> : <Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
-      <Route path="/parking-spaces" element={isAuthenticated && canAccess(['developer', 'admin', 'parking_manager'], ['superadmin', 'admin']) ? <ParkingSpaces /> : <Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
-      <Route path="/parking-manager" element={isAuthenticated && canAccess(['parking_manager']) ? <Navigate to="/dashboard" replace /> : <Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
-      <Route path="/driver" element={isAuthenticated && canAccess(['driver']) ? <DriverUser /> : <Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
+      <Route path="/dashboard" element={isAuthenticated && canAuthorize(user, 'dashboard:read') ? <Dashboard /> : <Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
+      <Route path="/parking-spaces" element={isAuthenticated && canAuthorize(user, 'parking_space:update', { type: 'parking_space', facilityId: 'facility-commercial-building' }) ? <ParkingSpaces /> : <Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
+      <Route path="/parking-manager" element={isAuthenticated && canAuthorize(user, 'dashboard:read') ? <Navigate to="/dashboard" replace /> : <Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
+      <Route path="/driver" element={isAuthenticated && canAuthorize(user, 'parking_lot:read') ? <DriverUser /> : <Navigate to={isAuthenticated ? landingPath : '/login'} replace />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

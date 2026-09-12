@@ -6,12 +6,19 @@ export interface MockLoginCredentials {
 export type MockUserRole = 'developer' | 'admin' | 'parking_manager' | 'driver'
 export type MockPrivilege = 'superadmin' | 'admin' | 'parking_manager' | 'driver'
 
+import type { MockAccountStatus, MockParkingSpaceType } from './authorization'
+
 export interface MockAuthUser {
   id: string
   email: string
   name: string
   role: MockUserRole
   privileges: MockPrivilege[]
+  assignedFacilityIds: string[]
+  assignedZoneIds: string[]
+  accessibleSpaceTypes: MockParkingSpaceType[]
+  permits: MockParkingSpaceType[]
+  accountStatus: MockAccountStatus
 }
 
 export interface MockLoginResponse {
@@ -40,24 +47,44 @@ export async function login(
       name: 'ParkFlow Developer',
       role: 'developer',
       privileges: ['superadmin'],
+      assignedFacilityIds: ['facility-commercial-building'],
+      assignedZoneIds: ['PAZ-N', 'PAZ-E', 'PAZ-S', 'PAZ-W'],
+      accessibleSpaceTypes: ['regular', 'pwd', 'senior', 'family', 'vip', 'staff', 'motorcycle', 'bicycle', 'ev_charging', 'loading_service'],
+      permits: ['vip', 'staff', 'ev_charging', 'loading_service'],
+      accountStatus: 'active',
     },
     'admin@parkflow.test': {
       id: 'user-parkflow-admin',
       name: 'ParkFlow Admin',
       role: 'admin',
       privileges: ['admin'],
+      assignedFacilityIds: ['facility-commercial-building'],
+      assignedZoneIds: ['PAZ-N', 'PAZ-E', 'PAZ-S', 'PAZ-W'],
+      accessibleSpaceTypes: ['regular', 'pwd', 'senior', 'family', 'vip', 'staff', 'motorcycle', 'bicycle', 'ev_charging', 'loading_service'],
+      permits: ['vip', 'staff', 'ev_charging', 'loading_service'],
+      accountStatus: 'active',
     },
     'manager@parkflow.test': {
       id: 'user-parkflow-manager',
       name: 'ParkFlow Manager',
       role: 'parking_manager',
       privileges: ['parking_manager'],
+      assignedFacilityIds: ['facility-commercial-building'],
+      assignedZoneIds: ['PAZ-E', 'PAZ-S'],
+      accessibleSpaceTypes: ['regular', 'pwd', 'senior', 'family', 'staff', 'motorcycle', 'bicycle', 'ev_charging'],
+      permits: ['staff', 'ev_charging'],
+      accountStatus: 'active',
     },
     'driver@parkflow.test': {
       id: 'user-parkflow-driver',
       name: 'ParkFlow Driver',
       role: 'driver',
       privileges: ['driver'],
+      assignedFacilityIds: [],
+      assignedZoneIds: [],
+      accessibleSpaceTypes: ['regular', 'pwd', 'senior', 'family', 'motorcycle', 'bicycle', 'ev_charging'],
+      permits: [],
+      accountStatus: 'active',
     },
   }
   const account = accounts[credentials.email.toLowerCase()]

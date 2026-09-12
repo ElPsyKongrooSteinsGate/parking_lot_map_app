@@ -19,6 +19,57 @@ The project implements a **minimal parking management system** focused on basic 
 - ✅ Mock authentication system with role-based access
 - ✅ Different interfaces per role (manager dashboard vs. driver map)
 
+### Recommended Authorization Attributes
+
+The existing role and privilege fields provide a basic RBAC foundation. To support the zone-based parking model with ABAC and PBAC, the following attributes should be added to the authorization model.
+
+#### User attributes
+- `assignedFacilityIds`: facilities the user may manage
+- `assignedZoneIds`: parking access zones the user may manage
+- `accessibleSpaceTypes`: space types the user is allowed to use or manage
+- `accountStatus`: `active` or `suspended`
+
+#### Parking resource attributes
+- `zoneId`: parking access zone, such as `PAZ-N`, `PAZ-E`, `PAZ-S`, or `PAZ-W`
+- `levelId` and `rowId`: position in the parking hierarchy
+- `type`: regular, PWD, senior, family, VIP, staff, motorcycle, bicycle, EV charging, or loading/service
+- `requiresPermit`: whether the space requires a specific permit
+- `assignedUserId`: optional owner or reservation subject
+
+#### Zone attributes
+- `accessibility`: `high`, `medium`, or `low`
+- `circulation`: `one_way` or `two_way`
+- `emergencyAccess`: whether the area is restricted for emergency access
+- `pedestrianRouteAvailable`: whether the zone connects to a safe pedestrian route
+
+#### Developer authorization profile
+The Developer account currently has the following ABAC attributes:
+
+- `assignedFacilityIds`: `facility-commercial-building`
+- `assignedZoneIds`: `PAZ-N`, `PAZ-E`, `PAZ-S`, and `PAZ-W`
+- `accessibleSpaceTypes`: all configured parking-space types
+- `permits`: VIP, staff, EV charging, and loading/service spaces
+- `accountStatus`: `active`
+
+This gives the Developer access to all facilities, zones, and configured parking-space types. In the current mock policy evaluator, Developers and Administrators also bypass facility and zone scope checks. The account must still be active, and permit checks still apply when a resource requires a permit.
+
+The Developer is evaluated against these PBAC policies:
+
+- `active-account`
+- `rbac-role-permission`
+- `abac-resource-scope`
+- `abac-space-type`
+- `pbac-required-permit`
+
+#### Example policies
+- A parking manager may edit spaces only when the space's `zoneId` is in the user's `assignedZoneIds`.
+- A driver may reserve only spaces matching the user's `accessibleSpaceTypes`.
+- Suspended users may not create reservations or update parking resources.
+- VIP, staff, EV, and loading/service spaces require the appropriate permit.
+- Emergency-access areas may be modified only by administrators.
+
+These attributes distinguish the access-control layers: RBAC grants broad permissions by role, ABAC evaluates user and resource attributes, and PBAC centralizes the resulting rules as policies. Authorization must ultimately be enforced by the backend; frontend checks should only control navigation and visibility.
+
 ### 3. Occupancy Management
 - ✅ Real-time occupancy percentage tracking
 - ✅ Available/occupied space monitoring
