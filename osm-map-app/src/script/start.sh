@@ -1,12 +1,14 @@
-```bash
 #!/usr/bin/env bash
 
-# Use MINGW64 Node
-export PATH="/mingw64/bin:$PATH"
-hash -r
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/../.." && pwd)"
+cd -- "$PROJECT_ROOT" || exit 1
 
-# Use Rolldown's MSVC native binding
-export NAPI_RS_NATIVE_LIBRARY_PATH="$(cygpath -w "$PWD/node_modules/@rolldown/binding-win32-x64-msvc/rolldown-binding.win32-x64-msvc.node")"
+# Use MINGW64 Node when available.
+if [[ -d /mingw64/bin ]]; then
+	export PATH="/mingw64/bin:$PATH"
+	hash -r
+fi
 
 # Show what is being used
 echo "Node:"
@@ -14,12 +16,8 @@ node --version
 echo "Node executable:"
 node -p "process.execPath"
 
-echo "Rolldown binding:"
-echo "$NAPI_RS_NATIVE_LIBRARY_PATH"
-
 # Test Rolldown
-node -e "require('rolldown'); console.log('Rolldown loaded successfully')"
+node -e "import('rolldown').then(() => console.log('Rolldown loaded successfully'))"
 
 # Start Vite
 npm run dev
-```
