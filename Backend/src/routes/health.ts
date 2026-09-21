@@ -9,7 +9,9 @@ export function healthRouter(config: AppConfig, pool: Pool) {
     try {
       await pool.query('select 1')
       response.json({ status: 'ready', serviceVersion: config.serviceVersion, requestId: request.id })
-    } catch {
+    } catch (error) {
+      const databaseError = error instanceof Error ? error.message : 'unknown database error'
+      console.error(JSON.stringify({ level: 'error', check: 'database-readiness', requestId: request.id, error: databaseError }))
       response.status(503).json({ error: { code: 'SERVICE_UNAVAILABLE', message: 'The service is not ready.', details: [], requestId: request.id } })
     }
   })

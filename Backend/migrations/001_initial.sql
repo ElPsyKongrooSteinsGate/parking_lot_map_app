@@ -1,5 +1,6 @@
 create extension if not exists pgcrypto;
 create extension if not exists postgis;
+create extension if not exists citext;
 
 DO $$ begin
   create type account_status as enum ('active', 'pending', 'suspended', 'closed');
